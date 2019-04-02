@@ -15,14 +15,18 @@ $this->title = 'Join';
 
     <p>Please fill out Referal ID</p>
 
-    <?= Html::beginForm(['index.php/site/join'], 'post') ?>
+    <?php $form = ActiveForm::begin([
+            'id' => 'join-form',
+            'enableAjaxValidation' => true,
+            'enableClientValidation' => false,
+        ]); ?>
         <div class="form-group">
             <?= Html::textInput('sponser_id') ?>
                 <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
             
         </div>
 
-    <?php Html::endForm(); ?>
+    <?php ActiveForm::end(); ?>
 
     
 </div>

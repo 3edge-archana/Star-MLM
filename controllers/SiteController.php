@@ -131,10 +131,17 @@ class SiteController extends Controller
         
         if (!empty(Yii::$app->request->post('sponser_id'))){
             $param = Yii::$app->request->post();
-            return $this->render('userRegister',['sponser_id' => $param['sponser_id']]);
+            $model = \app\models\User::find()->where(['sponser_id' => $param['sponser_id']])->one();
+            if($model)
+                return $this->redirect(['/user/register','sponser_id' => $param['sponser_id']]);
+            else{
+                Yii::$app->session->setFlash('error', 'Sponsor Id is not valid.');
+                return $this->refresh();
+            }
         }
         return $this->render('register');
     }
+    
     public function actionRegister(){
      if (!empty(Yii::$app->request->post())){
             $model = new RegistrationForm();
