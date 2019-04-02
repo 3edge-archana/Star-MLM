@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\RegistrationForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -124,5 +125,30 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionJoin(){
+        
+        if (!empty(Yii::$app->request->post('sponser_id'))){
+            $param = Yii::$app->request->post();
+            return $this->render('userRegister',['sponser_id' => $param['sponser_id']]);
+        }
+        return $this->render('register');
+    }
+    public function actionRegister(){
+     if (!empty(Yii::$app->request->post())){
+            $model = new RegistrationForm();
+            $param = Yii::$app->request->post();
+            $model->sponser_id = $param['sponser_id'];
+            $model->username = $param['name'];
+            $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash( $param['password'] );
+
+            echo "<pre>";
+            print_r($param);
+            print_r($model);
+            die;
+            return $this->render('login');
+        }
+        return $this->render('userRegister');   
     }
 }
