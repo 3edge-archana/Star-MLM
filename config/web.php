@@ -1,5 +1,5 @@
 <?php
-$baseUrl = str_replace('/web', '', (new \yii\web\Request)->getBaseUrl());
+$baseUrl = str_replace('/web', '/web', (new \yii\web\Request)->getBaseUrl());
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
