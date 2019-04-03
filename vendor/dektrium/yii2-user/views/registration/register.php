@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -21,6 +20,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Sign up');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
         <div class="panel panel-default">
@@ -33,23 +33,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     'enableAjaxValidation' => true,
                     'enableClientValidation' => false,
                 ]); ?>
-                <?php if($_GET['sponser_id']){
+                
+                <h4>Sponsor ID : <?= $user['sponser_id'] ?></h4>    
+                
+                <?php if($user['username']){
                     ?>
-                    <h3>Sponsor Id : <?=$_GET['sponser_id']?></h3>    
+                    <h5>User Name : <?= $user['username'] ?></h5>    
                     <?php
                 } ?>
+                <?php if($user['mobile']){
+                    ?>
+                    <h5>Mobile : <?= $user['mobile'] ?></h5>    
+                    <?php
+                } ?>
+                <label>Leg : </label>
+                <?= $form->field($model, 'rank')->radio(['label' => 'Left', 'value' => 1, 'uncheck' => null]) ?>
+                <?= $form->field($model, 'rank')->radio(['label' => 'Right', 'value' => 2, 'uncheck' => null]) ?>
+                
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'username') ?>
                                 
-                <?php if($_GET['sponser_id']){
-                    echo $form->field($model, 'sponser_id')->hiddenInput(['value' => $_GET['sponser_id']])->label(false);
-                } else {
-                    echo $form->field($model, 'sponser_id');
-                } ?>
+                <?php
+                    echo $form->field($model, 'sponser_id')->hiddenInput(['value' => $user['sponser_id']])->label(false);
+                ?>
+                <?php
+                    $affiliate_id='CP_'.rand(100,1000000000);
+                    echo $form->field($model, 'affiliate_id')->hiddenInput(['value' =>  $affiliate_id ])->label(false);
+                ?>                
                 <?= $form->field($model, 'name') ?>
                 
                 <?= $form->field($model, 'mobile') ?>
+                
                 
                 <?= $form->field($model, 'pincode') ?>
 
@@ -65,7 +80,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <p class="text-center">
-            <?= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['/user/security/login']) ?>
+            <!-- <= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['index.php/user/security/login']) ?> -->
+            <?= Html::a('Already registered? Sign in!',Yii::$app->getUrlManager()->getBaseUrl().'/index.php/user/security/login') ?>
         </p>
     </div>
 </div>

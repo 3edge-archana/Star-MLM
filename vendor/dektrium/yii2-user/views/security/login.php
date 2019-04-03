@@ -92,15 +92,16 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <?php if ($module->enableConfirmation): ?>
-            <p class="text-center">
-                <?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
-            </p>
+            <!-- <p class="text-center">
+                <= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
+            </p> -->
         <?php endif ?>
-        <?php if ($module->enableRegistration): ?>
+        <!-- <php if ($module->enableRegistration): ?> -->
             <p class="text-center">
-                <?= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
+                <?= Html::a('Don\'t have an account? Sign up!',Yii::$app->getUrlManager()->getBaseUrl().'/index.php/site/join') ?>
+                <!-- <= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?> -->
             </p>
-        <?php endif ?>
+        <!-- <php endif ?> -->
         <?= Connect::widget([
             'baseAuthUrl' => ['/user/security/auth'],
         ]) ?>

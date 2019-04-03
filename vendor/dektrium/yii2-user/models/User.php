@@ -189,6 +189,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'username'          => \Yii::t('user', 'Username'),
             'sponser_id'          => \Yii::t('user', 'Sponser Id'),
+            'affiliate_id'          => \Yii::t('user', 'Affiliate_id Id'),
+            'rank'          => \Yii::t('user', 'Rank'),
             'email'             => \Yii::t('user', 'Email'),
             'registration_ip'   => \Yii::t('user', 'Registration ip'),
             'unconfirmed_email' => \Yii::t('user', 'New email'),
@@ -212,10 +214,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $scenarios = parent::scenarios();
         return ArrayHelper::merge($scenarios, [
-            'register' => ['username', 'email', 'password', 'sponser_id'],
+            'register' => ['username', 'email', 'password', 'sponser_id','affiliate_id','rank'],
             'connect'  => ['username', 'email'],
-            'create'   => ['username', 'email', 'password', 'sponser_id'],
-            'update'   => ['username', 'email', 'password', 'sponser_id'],
+            'create'   => ['username', 'email', 'password', 'sponser_id','affiliate_id','rank'],
+            'update'   => ['username', 'email', 'password', 'sponser_id','affiliate_id','rank'],
             'settings' => ['username', 'email', 'password'],
         ]);
     }
@@ -257,6 +259,8 @@ class User extends ActiveRecord implements IdentityInterface
             'pincodeLength'   => ['pincode', 'string'],
             'sponserIdRequired' => ['sponser_id', 'required', 'on' => ['register']],
             'sponserIdLength'   => ['sponser_id', 'string', 'max' => 10, 'on' => ['register', 'create']],
+            'rankRequired' => ['rank', 'required', 'on' => ['register']],
+            'rankLength'   => ['rank', 'string', 'max' => 1, 'on' => ['register', 'create']],
         ];
     }
 
@@ -321,7 +325,7 @@ class User extends ActiveRecord implements IdentityInterface
         try {
             $this->confirmed_at = $this->module->enableConfirmation ? null : time();
             $this->password     = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
-
+            
             $this->trigger(self::BEFORE_REGISTER);
 
             if (!$this->save()) {

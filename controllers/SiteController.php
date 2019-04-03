@@ -13,6 +13,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    public $layout = 'main';
     /**
      * {@inheritdoc}
      */
@@ -126,14 +127,16 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-
-    public function actionJoin(){
+public function actionJoin(){
         
-        if (!empty(Yii::$app->request->post('sponser_id'))){
-            $param = Yii::$app->request->post();
-            $model = \app\models\User::find()->where(['sponser_id' => $param['sponser_id']])->one();
+        if (!empty(Yii::$app->request->get('sponser_id'))){
+            $param = Yii::$app->request->get();
+            $model = \app\models\User::find()->where(['affiliate_id' => $param['sponser_id']])->one();
+            /*echo "<pre>";
+            print_r($model);
+            die;*/
             if($model)
-                return $this->redirect(['/user/register','sponser_id' => $param['sponser_id']]);
+                return $this->redirect(['/index.php/user/register?id='.$param['sponser_id']]);
             else{
                 Yii::$app->session->setFlash('error', 'Sponsor Id is not valid.');
                 return $this->refresh();
@@ -142,20 +145,6 @@ class SiteController extends Controller
         return $this->render('register');
     }
     
-    public function actionRegister(){
-     if (!empty(Yii::$app->request->post())){
-            $model = new RegistrationForm();
-            $param = Yii::$app->request->post();
-            $model->sponser_id = $param['sponser_id'];
-            $model->username = $param['name'];
-            $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash( $param['password'] );
-
-            echo "<pre>";
-            print_r($param);
-            print_r($model);
-            die;
-            return $this->render('login');
-        }
-        return $this->render('userRegister');   
-    }
+        
+    
 }

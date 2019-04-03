@@ -119,21 +119,30 @@ class RegistrationController extends Controller
      * @return string
      * @throws \yii\web\HttpException
      */
-    public function actionRegister()
+    public function actionRegister($id)
     {
         if (!$this->module->enableRegistration) {
             throw new NotFoundHttpException();
         }
 
-        /** @var RegistrationForm $model */
         $model = \Yii::createObject(RegistrationForm::className());
         $event = $this->getFormEvent($model);
 
         $this->trigger(self::EVENT_BEFORE_REGISTER, $event);
 
         $this->performAjaxValidation($model);
+
+        $userData = \app\models\User::find()->where(['affiliate_id' => $id])->one();
+    
+        $user['sponser_id'] = ($userData['usertype']=='user'?$userData['affiliate_id']:$userData['sponser_id']);
+        $user['username'] = $userData['username'];
+        $user['mobile'] = $userData['mobile'];
+        /** @var RegistrationForm $model */
+        
         if(\Yii::$app->request->post()) {
+
             if ($model->load(\Yii::$app->request->post()) && $model->register()) {
+                
                 $this->trigger(self::EVENT_AFTER_REGISTER, $event);
 
                 return $this->render('/message', [
@@ -150,6 +159,7 @@ class RegistrationController extends Controller
         return $this->render('register', [
             'model'  => $model,
             'module' => $this->module,
+            'user' => $user,
         ]);
     }
 

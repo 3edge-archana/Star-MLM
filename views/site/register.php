@@ -17,8 +17,10 @@ $this->title = 'Join';
 
     <?php $form = ActiveForm::begin([
             'id' => 'join-form',
+            'method'=>'GET',
             'enableAjaxValidation' => true,
             'enableClientValidation' => false,
+
         ]); ?>
         <div class="form-group">
             <?= Html::textInput('sponser_id') ?>

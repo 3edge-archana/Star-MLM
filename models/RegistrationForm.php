@@ -12,6 +12,8 @@ class RegistrationForm extends \dektrium\user\models\RegistrationForm
      * @var string
      */
     public $sponser_id;
+    public $affiliate_id;
+    public $rank;
     public $name;
     public $mobile;
     public $pincode;
@@ -25,6 +27,8 @@ class RegistrationForm extends \dektrium\user\models\RegistrationForm
     {
         $rules = parent::rules();
         $rules[] = ['sponser_id', 'required'];
+        $rules[] = ['affiliate_id', 'required'];
+        $rules[] = ['rank', 'required'];
         $rules[] = ['name', 'required'];
         $rules[] = ['mobile', 'required'];
         $rules[] = ['pincode', 'required'];
@@ -40,6 +44,8 @@ class RegistrationForm extends \dektrium\user\models\RegistrationForm
     {
         $labels = parent::attributeLabels();
         $labels['sponser_id'] = \Yii::t('user', 'Sponser Id');
+        $labels['affiliate_id'] = \Yii::t('user', 'Affiliate Id');
+        $labels['rank'] = \Yii::t('user', 'Leg');
         $labels['usertype'] = \Yii::t('user', 'Type');
         $labels['name'] = \Yii::t('user', 'Name');
         $labels['mobile'] = \Yii::t('user', 'Mobile');
